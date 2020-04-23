@@ -90,8 +90,15 @@ export default function DashboardContainer() {
   }
 
   useEffect(() => {
+    // Check if we have  JWT token
+    const jwtToken = localStorage.get("ARROW_JWT_TOKEN");
+    const config = {
+      headers: {
+        Authorization: "Bearer " + jwtToken,
+      },
+    };
     axios
-      .get(`${base}/core/endpoint`)
+      .get(`${base}/core/endpoint`, config)
       .then((res) => {
         console.log(res.data.endpoints);
         setEndpoints(res.data.endpoints);

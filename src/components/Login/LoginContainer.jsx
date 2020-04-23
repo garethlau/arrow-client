@@ -18,7 +18,8 @@ export default function LoginContainer() {
     };
     try {
       let result = await axios.post(base + "/core/auth/login", data);
-      console.log(result);
+      const jwtToken = result.data.token;
+      localStorage.setItem("ARROW_JWT_TOKEN", jwtToken);
       history.push("/dashboard");
     } catch (err) {
       console.log(err.message);
