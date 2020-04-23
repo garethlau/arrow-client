@@ -7,7 +7,7 @@ import { Button } from "@blueprintjs/core";
 import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import Create from "./components/Create";
-axios.defaults.withCredentials = true;
+// axios.defaults.withCredentials = true;
 
 function Home() {
   return (
