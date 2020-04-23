@@ -8,6 +8,7 @@ import { AppToaster } from "../../toaster";
 import { Intent } from "@blueprintjs/core";
 
 import { base } from "../../constants";
+import utils from "../../utils";
 
 export default function CreateContainer() {
   const history = useHistory();
@@ -44,9 +45,9 @@ export default function CreateContainer() {
       body: {},
       query: {},
     };
-    console.log(data);
+    const config = utils.getJWTConfig();
     axios
-      .post(base + "/core/endpoint/validate", data)
+      .post(base + "/core/endpoint/validate", data, config)
       .then((res) => {
         let d = new Date();
         setTestResults([
@@ -69,9 +70,9 @@ export default function CreateContainer() {
       body: {},
       query: {},
     };
-    console.log(data);
+    const config = utils.getJWTConfig();
     axios
-      .post(base + "/core/endpoint", data)
+      .post(base + "/core/endpoint", data, config)
       .then((res) => {
         console.log(res);
         AppToaster.show({

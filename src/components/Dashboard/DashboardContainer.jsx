@@ -6,6 +6,8 @@ import { Intent } from "@blueprintjs/core";
 import { AppToaster } from "../../toaster";
 import { base } from "../../constants";
 
+import utils from "../../utils";
+
 export default function DashboardContainer() {
   const [endpoints, setEndpoints] = useState([]);
   const [selected, setSelected] = useState([""]);
@@ -61,8 +63,9 @@ export default function DashboardContainer() {
   };
 
   function confirmDelete() {
+    const config = utils.getJWTConfig();
     axios
-      .delete(`${base}/core/endpoint?toDelete=["${deleteAlert.id}"]`)
+      .delete(`${base}/core/endpoint?toDelete=["${deleteAlert.id}"]`, config)
       .then((res) => {
         setDeleteAlert({ isOpen: false });
 
@@ -91,12 +94,7 @@ export default function DashboardContainer() {
 
   useEffect(() => {
     // Check if we have  JWT token
-    const jwtToken = localStorage.getItem("ARROW_JWT_TOKEN");
-    const config = {
-      headers: {
-        Authorization: "Bearer " + jwtToken,
-      },
-    };
+    const config = utils.getJWTConfig();
     axios
       .get(`${base}/core/endpoint`, config)
       .then((res) => {
