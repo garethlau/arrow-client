@@ -91,7 +91,7 @@ export default function DashboardContainer() {
 
   useEffect(() => {
     // Check if we have  JWT token
-    const jwtToken = localStorage.get("ARROW_JWT_TOKEN");
+    const jwtToken = localStorage.getItem("ARROW_JWT_TOKEN");
     const config = {
       headers: {
         Authorization: "Bearer " + jwtToken,
