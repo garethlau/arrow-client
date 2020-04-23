@@ -74,7 +74,7 @@ export default function Dashboard({
             </tr>
           </thead>
           <tbody>
-            {endpoints.map((endpoint) => (
+            {endpoints && endpoints.map((endpoint) => (
               <tr key={endpoint._id}>
                 <td style={{ textAlign: "center" }}>
                   <Checkbox
