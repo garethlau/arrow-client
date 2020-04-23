@@ -91,7 +91,7 @@ export default function DashboardContainer() {
 
   useEffect(() => {
     axios
-      .get("/core/endpoint")
+      .get(`${base}/core/endpoint`)
       .then((res) => {
         console.log(res.data.endpoints);
         setEndpoints(res.data.endpoints);
