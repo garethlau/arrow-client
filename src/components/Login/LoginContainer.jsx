@@ -4,9 +4,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 
 import useFormInput from "../../hooks/useFormInput";
-
-const base =
-  process.env.NODE_ENV === "production" ? "arrow.garethdev.space" : "";
+import { base } from "../../constants";
 
 export default function LoginContainer() {
   const history = useHistory();

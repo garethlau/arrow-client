@@ -1,0 +1,4 @@
+module.exports = {
+  base:
+    process.env.NODE_ENV === "production" ? "http://arrow.garethdev.space" : "",
+};

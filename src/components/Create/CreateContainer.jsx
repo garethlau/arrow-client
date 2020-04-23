@@ -7,8 +7,8 @@ import { AppToaster } from "../../toaster";
 
 import { Intent } from "@blueprintjs/core";
 
-const base =
-  process.env.NODE_ENV === "production" ? "arrow.garethdev.space" : "";
+import { base } from "../../constants";
+
 export default function CreateContainer() {
   const history = useHistory();
   const uri = useFormInput("");

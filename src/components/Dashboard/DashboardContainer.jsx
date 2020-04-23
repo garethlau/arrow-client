@@ -4,8 +4,7 @@ import axios from "axios";
 import { Intent } from "@blueprintjs/core";
 
 import { AppToaster } from "../../toaster";
-const base =
-  process.env.NODE_ENV === "production" ? "arrow.garethdev.space" : "";
+import { base } from "../../constants";
 
 export default function DashboardContainer() {
   const [endpoints, setEndpoints] = useState([]);
