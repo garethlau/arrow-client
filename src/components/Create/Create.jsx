@@ -6,7 +6,6 @@ import "prismjs/components/prism-clike";
 import "prismjs/components/prism-javascript";
 import "../../styles/prism.css";
 
-import Nav from "../Nav";
 import {
   FormGroup,
   InputGroup,
@@ -16,6 +15,7 @@ import {
   Button,
   ControlGroup,
   H3,
+  H5,
   Collapse,
   Code,
 } from "@blueprintjs/core";
@@ -35,20 +35,21 @@ export default function Create({
   showTestResults,
 }) {
   return (
-    <div>
-      <Nav />
-      <div style={{ padding: "30px" }}>
+    <div style={{ padding: "30px" }}>
+      <section>
         <H3>Create Your New API Endpoint</H3>
-        <ControlGroup style={{ width: "450px", marginBottom: "15px" }}>
+        <ControlGroup style={{ marginBottom: "15px" }}>
           <HTMLSelect
+            style={{ width: "100px" }}
             id="method-selector"
             value={method}
             options={["GET", "POST", "PUT", "PATCH", "DELETE"]}
             onChange={handleMethodChange}
           />
           <InputGroup
+            style={{ width: "450px" }}
             id="endpoint-uri-text-input"
-            placeholder="/animals/dogs"
+            placeholder="/animals/dogs/breeds/golden-retriever"
             value={uri.value}
             onChange={uri.onChange}
           />
@@ -71,8 +72,11 @@ export default function Create({
             }}
           />
         </div>
+      </section>
+
+      <section>
         <div style={{ width: "300px" }}>
-          <H3>Authorized Domain Origins</H3>
+          <H5>Authorized Domain Origins</H5>
           <p>Only requests made from these domains can access your API.</p>
           <div style={{ marginBottom: "15px" }}>
             {authorizedDomains.length > 0 &&
@@ -90,25 +94,29 @@ export default function Create({
               ))}
           </div>
           <div style={{ marginBottom: "15px" }}>
-            <ControlGroup>
+            <FormGroup helperText={whitelist.helperText}>
               <InputGroup
                 placeholder="realurl.com"
                 onChange={whitelist.onChange}
                 value={whitelist.value}
               />
-              <Button
-                onClick={addDomain}
-                rightIcon="add"
-                intent="primary"
-                text="Add Domain"
-              />
-            </ControlGroup>
+            </FormGroup>
+            <Button
+              onClick={addDomain}
+              rightIcon="add"
+              intent="primary"
+              text="Add Domain"
+            />
           </div>
         </div>
+      </section>
+
+      <section>
+        <H5>Test Your Endpoint</H5>
         <div style={{ marginBottom: "15px" }}>
           <Button
             onClick={testCode}
-            icon="lab-test"
+            rightIcon="lab-test"
             intent="warning"
             text="Check Validity"
           />
@@ -133,13 +141,13 @@ export default function Create({
             </pre>
           </Collapse>
         </div>
-        <Button
-          onClick={createEndpoint}
-          icon="globe-network"
-          intent="primary"
-          text="Create Endpoint"
-        />
-      </div>
+      </section>
+      <Button
+        onClick={createEndpoint}
+        rightIcon="cloud-upload"
+        intent="primary"
+        text="Create Endpoint"
+      />
     </div>
   );
 }

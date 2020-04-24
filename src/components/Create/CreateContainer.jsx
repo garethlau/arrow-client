@@ -90,6 +90,10 @@ export default function CreateContainer() {
   }
 
   function addDomain() {
+    if (authorizedDomains.includes(whitelist.value)) {
+      whitelist.setError("Domain already whitelisted.");
+      return;
+    }
     setAuthorizedDomains([...authorizedDomains, whitelist.value]);
     whitelist.clear();
   }
