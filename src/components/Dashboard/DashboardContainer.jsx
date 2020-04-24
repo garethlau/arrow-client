@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useHistory } from "react-router-dom";
 import Dashboard from "./Dashboard";
 import axios from "axios";
 import { Intent } from "@blueprintjs/core";
@@ -9,6 +10,7 @@ import { base } from "../../constants";
 import utils from "../../utils";
 
 export default function DashboardContainer() {
+  const history = useHistory();
   const [endpoints, setEndpoints] = useState([]);
   const [selected, setSelected] = useState([""]);
   const [deleteAlert, setDeleteAlert] = useState({
@@ -49,7 +51,9 @@ export default function DashboardContainer() {
     });
   };
 
-  const edit = (id) => () => {};
+  const edit = (id) => () => {
+    history.push(`/edit/${id}`);
+  };
 
   const remove = (id) => () => {
     let endpoint = endpoints.filter((elem) => elem._id === id)[0];

@@ -33,11 +33,12 @@ export default function Create({
   removeDomain,
   testResults,
   showTestResults,
+  editMode,
 }) {
   return (
     <div style={{ padding: "30px" }}>
       <section>
-        <H3>Create Your New API Endpoint</H3>
+        <H3>{editMode ? "Edit API Endpoint" : "Create API Endpoint"}</H3>
         <ControlGroup style={{ marginBottom: "15px" }}>
           <HTMLSelect
             style={{ width: "100px" }}
@@ -146,7 +147,7 @@ export default function Create({
         onClick={createEndpoint}
         rightIcon="cloud-upload"
         intent="primary"
-        text="Create Endpoint"
+        text={editMode ? "Update Endpoint" : "Create Endpoint"}
       />
     </div>
   );

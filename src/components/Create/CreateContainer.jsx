@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Create from "./Create";
 import useFormInput from "../../hooks/useFormInput";
@@ -27,6 +27,8 @@ export default function CreateContainer() {
   const [testResults, setTestResults] = useState([]);
   const [showTestResults, setShowTestResults] = useState(true);
 
+  const [editMode, setEditMode] = useState(false);
+
   function handleMethodChange(event) {
     setMethod(event.currentTarget.value);
   }
@@ -34,6 +36,31 @@ export default function CreateContainer() {
   function onCodeChange(newCode) {
     setCode(newCode);
   }
+
+  useEffect(() => {
+    console.log(history.location.pathname.split("/")[1]);
+    if (history.location.pathname.split("/")[1] === "edit") {
+      // Edit mode
+      setEditMode(true);
+      const id = history.location.pathname.split("/")[2];
+      const config = utils.getJWTConfig();
+      axios
+        .get(base + "/core/endpoint/" + id, config)
+        .then((res) => {
+          console.log(res);
+          const { endpoint } = res.data;
+          setMethod(endpoint.method);
+          setAuthorizedDomains(endpoint.whitelist);
+          setCode(endpoint.displayCode);
+          let uriSegs = endpoint.uri.split("/").splice(3);
+          let uriString = uriSegs.map((seg) => "/" + seg);
+          uri.setValue(uriString);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [history.location.pathname]);
 
   // content: code.replace(/\n/g, ""),
   function testCode() {
@@ -71,22 +98,41 @@ export default function CreateContainer() {
       query: {},
     };
     const config = utils.getJWTConfig();
-    axios
-      .post(base + "/core/endpoint", data, config)
-      .then((res) => {
-        console.log(res);
-        AppToaster.show({
-          message: "Endpoint created. ",
-          action: {
-            onClick: () => history.push("/dashboard"),
-            text: "Go to Dashboard",
-          },
-          intent: Intent.SUCCESS,
+    if (editMode) {
+      axios
+        .patch(`${base}/core/endpoint/${history.location.pathname.split("/")[2]}`, data, config)
+        .then((res) => {
+          console.log(res);
+          AppToaster.show({
+            message: "Endpoint updated. ",
+            action: {
+              onClick: () => history.push("/dashboard"),
+              text: "Go to Dashboard",
+            },
+            intent: Intent.SUCCESS,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
         });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    } else {
+      axios
+        .post(base + "/core/endpoint", data, config)
+        .then((res) => {
+          console.log(res);
+          AppToaster.show({
+            message: "Endpoint created. ",
+            action: {
+              onClick: () => history.push("/dashboard"),
+              text: "Go to Dashboard",
+            },
+            intent: Intent.SUCCESS,
+          });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }
 
   function addDomain() {
@@ -119,6 +165,7 @@ export default function CreateContainer() {
       removeDomain={removeDomain}
       testResults={testResults}
       showTestResults={showTestResults}
+      editMode={editMode}
     />
   );
 }
