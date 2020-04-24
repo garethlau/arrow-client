@@ -29,16 +29,7 @@ export default function CreateContainer() {
 
   const [editMode, setEditMode] = useState(false);
 
-  const [tags, setTags] = useState([]);
-
-  function clearTags() {
-    setTags([]);
-  }
-
-  function onTagChange(values) {
-    setTags(values);
-  }
-
+const tags = useTagInput();
   function handleMethodChange(event) {
     setMethod(event.currentTarget.value);
   }
@@ -62,7 +53,7 @@ export default function CreateContainer() {
           setMethod(endpoint.method);
           authorizedDomains.set(endpoint.whitelist)
           setCode(endpoint.displayCode);
-          setTags(endpoint.tags);
+          tags.set(endpoint.tags)
           let uriSegs = endpoint.uri.split("/").splice(3);
           let uriString = uriSegs.map((seg) => "/" + seg)[0];
           uri.setValue(uriString);
@@ -108,7 +99,7 @@ export default function CreateContainer() {
       whitelist: authorizedDomains.values,
       body: {},
       query: {},
-      tags: tags,
+      tags: tags.values,
     };
     const config = utils.getJWTConfig();
     if (editMode) {
@@ -163,8 +154,6 @@ export default function CreateContainer() {
       showTestResults={showTestResults}
       editMode={editMode}
       tags={tags}
-      clearTags={clearTags}
-      onTagChange={onTagChange}
     />
   );
 }

@@ -33,8 +33,6 @@ export default function Create({
   showTestResults,
   editMode,
   tags,
-  clearTags,
-  onTagChange,
 }) {
   return (
     <div style={{ padding: "30px" }}>
@@ -99,12 +97,12 @@ export default function Create({
         <H5>Tags</H5>
         <p>Add tags to keep track of your endpoint.</p>
         <TagInput
-          onChange={onTagChange}
+          onChange={tags.onChange}
           placeholder="Tag this endpoint"
           rightElement={
-            tags.length > 0 && <Button icon="cross" minimal={true} onClick={clearTags} />
+            tags.values.length > 0 && <Button icon="cross" minimal={true} onClick={tags.clear} />
           }
-          values={tags}
+          values={tags.values}
         />
       </section>
       <section>
