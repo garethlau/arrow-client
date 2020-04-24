@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import {
   Navbar,
   NavbarDivider,
@@ -8,8 +8,12 @@ import {
   Alignment,
   Classes,
 } from "@blueprintjs/core";
+import { store } from "../../store";
 
-export default function Nav({ goto }) {
+export default function Nav({ goto, logout }) {
+  const globalStore = useContext(store);
+  const { state } = globalStore;
+  console.log(state);
   return (
     <Navbar>
       <NavbarGroup align={Alignment.LEFT}>
@@ -36,12 +40,21 @@ export default function Nav({ goto }) {
       </NavbarGroup>
 
       <NavbarGroup align={Alignment.RIGHT}>
-        <Button
-          onClick={goto("/login")}
-          className={Classes.MINIMAL}
-          icon="log-in"
-          text="Login"
-        />
+        {state.user ? (
+          <Button
+            onClick={logout}
+            className={Classes.MINIMAL}
+            icon="log-out"
+            text="Logout"
+          />
+        ) : (
+          <Button
+            onClick={goto("/login")}
+            className={Classes.MINIMAL}
+            icon="log-in"
+            text="Log in"
+          />
+        )}
       </NavbarGroup>
     </Navbar>
   );

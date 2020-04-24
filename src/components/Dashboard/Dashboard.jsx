@@ -1,5 +1,4 @@
 import React from "react";
-import Nav from "../Nav";
 
 import { highlight, languages } from "prismjs/components/prism-core";
 import "prismjs/components/prism-clike";
@@ -40,7 +39,6 @@ export default function Dashboard({
 
   return (
     <div>
-      <Nav />
       <section>
         <Alert
           canOutsideClickCancel

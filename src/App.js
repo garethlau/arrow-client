@@ -8,7 +8,9 @@ import Login from "./components/Login";
 import Dashboard from "./components/Dashboard";
 import Create from "./components/Create";
 // axios.defaults.withCredentials = true;
+import Nav from "./components/Nav";
 
+import { StateProvider } from "./store.js";
 function Home() {
   return (
     <div>
@@ -20,14 +22,17 @@ function Home() {
 
 function App() {
   return (
-    <Router>
-      <Switch>
-        <Route exact path="/" component={Home} />
-        <Route path="/login" component={Login} />
-        <Route path="/dashboard" component={Dashboard} />
-        <Route path="/create" component={Create} />
-      </Switch>
-    </Router>
+    <StateProvider>
+      <Router>
+        <Nav />
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route path="/login" component={Login} />
+          <Route path="/dashboard" component={Dashboard} />
+          <Route path="/create" component={Create} />
+        </Switch>
+      </Router>
+    </StateProvider>
   );
 }
 
