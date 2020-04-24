@@ -15,6 +15,7 @@ import {
   H3,
   Code,
 } from "@blueprintjs/core";
+import { base } from "../../constants";
 
 export default function Dashboard({
   endpoints,
@@ -72,48 +73,49 @@ export default function Dashboard({
             </tr>
           </thead>
           <tbody>
-            {endpoints && endpoints.map((endpoint) => (
-              <tr key={endpoint._id}>
-                <td style={{ textAlign: "center" }}>
-                  <Checkbox
-                    checked={selected.includes(endpoint._id)}
-                    onChange={select(endpoint._id)}
-                  />
-                </td>
-                <td>{endpoint.method}</td>
-                <td>{endpoint.uri}</td>
-                <td>{endpoint.whitelist.toString()}</td>
-                <td>
-                  <Button
-                    onClick={view(endpoint._id)}
-                    style={{ marginRight: "10px" }}
-                    small
-                    rightIcon="eye-open"
-                    text="View"
-                    intent="primary"
-                    outlined
-                  />
-                  <Button
-                    onClick={edit(endpoint._id)}
-                    style={{ marginRight: "10px" }}
-                    small
-                    rightIcon="edit"
-                    text="Edit"
-                    intent="warning"
-                    outlined
-                  />
+            {endpoints &&
+              endpoints.map((endpoint) => (
+                <tr key={endpoint._id}>
+                  <td style={{ textAlign: "center" }}>
+                    <Checkbox
+                      checked={selected.includes(endpoint._id)}
+                      onChange={select(endpoint._id)}
+                    />
+                  </td>
+                  <td>{endpoint.method}</td>
+                  <td>{base + endpoint.uri}</td>
+                  <td>{endpoint.whitelist.toString()}</td>
+                  <td>
+                    <Button
+                      onClick={view(endpoint._id)}
+                      style={{ marginRight: "10px" }}
+                      small
+                      rightIcon="eye-open"
+                      text="View"
+                      intent="primary"
+                      outlined
+                    />
+                    <Button
+                      onClick={edit(endpoint._id)}
+                      style={{ marginRight: "10px" }}
+                      small
+                      rightIcon="edit"
+                      text="Edit"
+                      intent="warning"
+                      outlined
+                    />
 
-                  <Button
-                    onClick={remove(endpoint._id)}
-                    small
-                    rightIcon="trash"
-                    text="Delete"
-                    intent="danger"
-                    outlined
-                  />
-                </td>
-              </tr>
-            ))}
+                    <Button
+                      onClick={remove(endpoint._id)}
+                      small
+                      rightIcon="trash"
+                      text="Delete"
+                      intent="danger"
+                      outlined
+                    />
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </HTMLTable>
       </div>
@@ -152,15 +154,12 @@ export default function Dashboard({
               dangerouslySetInnerHTML={createCode()}
             />
             <div>
-              {endpointOverlay.whitelist && endpointOverlay.whitelist.length > 0 &&
+              {endpointOverlay.whitelist &&
+                endpointOverlay.whitelist.length > 0 &&
                 endpointOverlay.whitelist.map((domain) => <div>{domain}</div>)}
             </div>
             <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-              <Button
-                intent={Intent.DANGER}
-                onClick={handleViewClose}
-                style={{ margin: "" }}
-              >
+              <Button intent={Intent.DANGER} onClick={handleViewClose} style={{ margin: "" }}>
                 Close
               </Button>
             </div>
