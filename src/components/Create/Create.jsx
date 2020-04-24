@@ -18,6 +18,7 @@ import {
   H5,
   Collapse,
   Code,
+  TagInput,
 } from "@blueprintjs/core";
 export default function Create({
   uri,
@@ -34,6 +35,9 @@ export default function Create({
   testResults,
   showTestResults,
   editMode,
+  tags,
+  clearTags,
+  onTagChange,
 }) {
   return (
     <div style={{ padding: "30px" }}>
@@ -102,25 +106,27 @@ export default function Create({
                 value={whitelist.value}
               />
             </FormGroup>
-            <Button
-              onClick={addDomain}
-              rightIcon="add"
-              intent="primary"
-              text="Add Domain"
-            />
+            <Button onClick={addDomain} rightIcon="add" intent="primary" text="Add Domain" />
           </div>
         </div>
       </section>
 
+      <section style={{ marginBottom: "15px", width: "550px" }}>
+        <H5>Tags</H5>
+        <p>Add tags to keep track of your endpoint.</p>
+        <TagInput
+          onChange={onTagChange}
+          placeholder="Tag this endpoint"
+          rightElement={
+            tags.length > 0 && <Button icon="cross" minimal={true} onClick={clearTags} />
+          }
+          values={tags}
+        />
+      </section>
       <section>
         <H5>Test Your Endpoint</H5>
         <div style={{ marginBottom: "15px" }}>
-          <Button
-            onClick={testCode}
-            rightIcon="lab-test"
-            intent="warning"
-            text="Check Validity"
-          />
+          <Button onClick={testCode} rightIcon="lab-test" intent="warning" text="Check Validity" />
         </div>
         <p>Results:</p>
         <div

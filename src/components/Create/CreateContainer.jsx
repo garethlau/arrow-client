@@ -29,6 +29,16 @@ export default function CreateContainer() {
 
   const [editMode, setEditMode] = useState(false);
 
+  const [tags, setTags] = useState([]);
+
+  function clearTags() {
+    setTags([]);
+  }
+
+  function onTagChange(values) {
+    setTags(values);
+  }
+
   function handleMethodChange(event) {
     setMethod(event.currentTarget.value);
   }
@@ -47,13 +57,14 @@ export default function CreateContainer() {
       axios
         .get(base + "/core/endpoint/" + id, config)
         .then((res) => {
-          console.log(res);
+          // Fill in endpoint data
           const { endpoint } = res.data;
           setMethod(endpoint.method);
           setAuthorizedDomains(endpoint.whitelist);
           setCode(endpoint.displayCode);
+          setTags(endpoint.tags);
           let uriSegs = endpoint.uri.split("/").splice(3);
-          let uriString = uriSegs.map((seg) => "/" + seg);
+          let uriString = uriSegs.map((seg) => "/" + seg)[0];
           uri.setValue(uriString);
         })
         .catch((err) => {
@@ -89,6 +100,7 @@ export default function CreateContainer() {
   }
 
   function createEndpoint() {
+    console.log(uri.value);
     const data = {
       uri: uri.value.substring(1),
       method: method,
@@ -96,6 +108,7 @@ export default function CreateContainer() {
       whitelist: authorizedDomains,
       body: {},
       query: {},
+      tags: tags,
     };
     const config = utils.getJWTConfig();
     if (editMode) {
@@ -145,9 +158,7 @@ export default function CreateContainer() {
   }
 
   const removeDomain = (hostname) => () => {
-    setAuthorizedDomains(
-      authorizedDomains.filter((domain) => domain !== hostname)
-    );
+    setAuthorizedDomains(authorizedDomains.filter((domain) => domain !== hostname));
   };
 
   return (
@@ -166,6 +177,9 @@ export default function CreateContainer() {
       testResults={testResults}
       showTestResults={showTestResults}
       editMode={editMode}
+      tags={tags}
+      clearTags={clearTags}
+      onTagChange={onTagChange}
     />
   );
 }

@@ -14,6 +14,8 @@ import {
   Classes,
   H3,
   Code,
+  TagInput,
+  Tag,
 } from "@blueprintjs/core";
 import { base } from "../../constants";
 
@@ -69,6 +71,7 @@ export default function Dashboard({
               <th style={{ width: "100px" }}>METHOD</th>
               <th>URL</th>
               <th>Whitelist</th>
+              <th style={{ width: "250px" }}>Tags</th>
               <th style={{ width: "300px" }}>{null}</th>
             </tr>
           </thead>
@@ -85,6 +88,9 @@ export default function Dashboard({
                   <td>{endpoint.method}</td>
                   <td>{base + endpoint.uri}</td>
                   <td>{endpoint.whitelist.toString()}</td>
+                  <td>
+                    <TagInput disabled fill values={endpoint.tags} />
+                  </td>
                   <td>
                     <Button
                       onClick={view(endpoint._id)}
