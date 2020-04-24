@@ -16,6 +16,7 @@ import {
   Code,
   TagInput,
   Tag,
+  Spinner,
 } from "@blueprintjs/core";
 import { base } from "../../constants";
 
@@ -32,6 +33,7 @@ export default function Dashboard({
   remove,
   endpointOverlay,
   handleViewClose,
+  goto,
 }) {
   function createCode() {
     return {
@@ -65,27 +67,27 @@ export default function Dashboard({
         </Alert>
       </section>
       <div style={{ padding: "25px" }}>
-        <HTMLTable bordered interactive style={{ width: "100%" }}>
-          <thead>
-            <tr>
-              <th style={{ width: "75px" }}>
-                <Button
-                  intent={Intent.DANGER}
-                  text="Delete"
-                  disabled={selected.length === 0}
-                  onClick={removeSelected}
-                />
-              </th>
-              <th style={{ width: "100px" }}>METHOD</th>
-              <th>URL</th>
-              <th>Whitelist</th>
-              <th style={{ width: "250px" }}>Tags</th>
-              <th style={{ width: "300px" }}>{null}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {endpoints &&
-              endpoints.map((endpoint) => (
+        {endpoints && endpoints.length > 0 && (
+          <HTMLTable bordered interactive style={{ width: "100%" }}>
+            <thead>
+              <tr>
+                <th style={{ width: "75px" }}>
+                  <Button
+                    intent={Intent.DANGER}
+                    text="Delete"
+                    disabled={selected.length === 0}
+                    onClick={removeSelected}
+                  />
+                </th>
+                <th style={{ width: "100px" }}>METHOD</th>
+                <th>URL</th>
+                <th>Whitelist</th>
+                <th style={{ width: "250px" }}>Tags</th>
+                <th style={{ width: "300px" }}>{null}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {endpoints.map((endpoint) => (
                 <tr key={endpoint._id}>
                   <td style={{ textAlign: "center" }}>
                     <Checkbox
@@ -136,9 +138,22 @@ export default function Dashboard({
                   </td>
                 </tr>
               ))}
-          </tbody>
-        </HTMLTable>
+            </tbody>
+          </HTMLTable>
+        )}
       </div>
+
+      {endpoints && endpoints.length === 0 && (
+        <div style={{ textAlign: "center" }}>
+          <p>No endpoints created.</p>
+          <Button
+            intent="primary"
+            onClick={goto("/create")}
+            rightIcon="chevron-right"
+            text="Create an Endpoint"
+          />
+        </div>
+      )}
 
       <section>
         <Overlay

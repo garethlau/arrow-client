@@ -11,7 +11,7 @@ import utils from "../../utils";
 
 export default function DashboardContainer() {
   const history = useHistory();
-  const [endpoints, setEndpoints] = useState([]);
+  const [endpoints, setEndpoints] = useState(null);
   const [selected, setSelected] = useState([]);
   const [deleteAlert, setDeleteAlert] = useState({
     isOpen: false,
@@ -40,8 +40,6 @@ export default function DashboardContainer() {
 
   const view = (id) => () => {
     let endpoint = endpoints.filter((elem) => elem._id === id)[0];
-
-    console.log(endpoint);
     setEndpointOverlay({
       isOpen: true,
       uri: endpoint.uri,
@@ -133,6 +131,10 @@ export default function DashboardContainer() {
       });
   }, []);
 
+  const goto = (destination) => () => {
+    history.push(destination)
+  }
+
   return (
     <Dashboard
       endpoints={endpoints}
@@ -147,6 +149,7 @@ export default function DashboardContainer() {
       removeSelected={removeSelected}
       endpointOverlay={endpointOverlay}
       handleViewClose={handleViewClose}
+      goto={goto}
     />
   );
 }
