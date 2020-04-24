@@ -12,7 +12,7 @@ import utils from "../../utils";
 export default function DashboardContainer() {
   const history = useHistory();
   const [endpoints, setEndpoints] = useState([]);
-  const [selected, setSelected] = useState([""]);
+  const [selected, setSelected] = useState([]);
   const [deleteAlert, setDeleteAlert] = useState({
     isOpen: false,
     uri: "",
@@ -66,25 +66,48 @@ export default function DashboardContainer() {
     });
   };
 
-  function confirmDelete() {
+  async function removeSelected() {
     const config = utils.getJWTConfig();
-    axios
-      .delete(`${base}/core/endpoint?toDelete=["${deleteAlert.id}"]`, config)
-      .then((res) => {
-        setDeleteAlert({ isOpen: false });
-
-        AppToaster.show({
-          message: "Endpoint successfully deleted.",
-          action: {
-            onClick: () => window.location.reload(false),
-            text: "Refresh",
-          },
-          intent: Intent.SUCCESS,
-        });
-      })
-      .catch((err) => {
-        console.log(err);
+    let toDelete = selected.map(id => `"${id}"`)
+    try {
+      await axios.delete(`${base}/core/endpoint?toDelete=[${toDelete}]`, config);
+      AppToaster.show({
+        message: "Endpoints successfully deleted.",
+        action: {
+          onClick: () => window.location.reload(false),
+          text: "Reload",
+        },
+        intent: Intent.SUCCESS,
       });
+    } catch (err) {
+      console.log(err);
+      AppToaster.show({
+        message: "Error deleting endpoints.",
+        intent: Intent.DANGER,
+      });
+    }
+  }
+
+  async function confirmDelete() {
+    const config = utils.getJWTConfig();
+    try {
+      await axios.delete(`${base}/core/endpoint?toDelete=["${deleteAlert.id}"]`, config);
+      setDeleteAlert({ isOpen: false });
+      AppToaster.show({
+        message: "Endpoint successfully deleted.",
+        action: {
+          onClick: () => window.location.reload(false),
+          text: "Reload",
+        },
+        intent: Intent.SUCCESS,
+      });
+    } catch (err) {
+      console.log(err);
+      AppToaster.show({
+        message: "Error deleting endpoint.",
+        intent: Intent.DANGER,
+      });
+    }
   }
 
   function cancelDelete() {
@@ -121,6 +144,7 @@ export default function DashboardContainer() {
       view={view}
       edit={edit}
       remove={remove}
+      removeSelected={removeSelected}
       endpointOverlay={endpointOverlay}
       handleViewClose={handleViewClose}
     />

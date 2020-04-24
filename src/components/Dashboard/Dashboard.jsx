@@ -26,6 +26,7 @@ export default function Dashboard({
   deleteAlert,
   cancelDelete,
   confirmDelete,
+  removeSelected,
   view,
   edit,
   remove,
@@ -67,7 +68,14 @@ export default function Dashboard({
         <HTMLTable bordered interactive style={{ width: "100%" }}>
           <thead>
             <tr>
-              <th style={{ width: "75px" }}>{null}</th>
+              <th style={{ width: "75px" }}>
+                <Button
+                  intent={Intent.DANGER}
+                  text="Delete"
+                  disabled={selected.length === 0}
+                  onClick={removeSelected}
+                />
+              </th>
               <th style={{ width: "100px" }}>METHOD</th>
               <th>URL</th>
               <th>Whitelist</th>
@@ -85,7 +93,7 @@ export default function Dashboard({
                       onChange={select(endpoint._id)}
                     />
                   </td>
-                  <td>
+                  <td style={{ textAlign: "center" }}>
                     <Code>{endpoint.method}</Code>
                   </td>
                   <td>
