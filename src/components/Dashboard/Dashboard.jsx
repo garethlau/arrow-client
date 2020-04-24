@@ -85,9 +85,15 @@ export default function Dashboard({
                       onChange={select(endpoint._id)}
                     />
                   </td>
-                  <td>{endpoint.method}</td>
-                  <td>{base + endpoint.uri}</td>
-                  <td>{endpoint.whitelist.toString()}</td>
+                  <td>
+                    <Code>{endpoint.method}</Code>
+                  </td>
+                  <td>
+                    <Code>{base + endpoint.uri}</Code>
+                  </td>
+                  <td>
+                    <TagInput disabled fill values={endpoint.whitelist} />
+                  </td>
                   <td>
                     <TagInput disabled fill values={endpoint.tags} />
                   </td>

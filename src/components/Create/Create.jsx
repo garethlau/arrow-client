@@ -28,10 +28,7 @@ export default function Create({
   onCodeChange,
   testCode,
   createEndpoint,
-  whitelist,
   authorizedDomains,
-  addDomain,
-  removeDomain,
   testResults,
   showTestResults,
   editMode,
@@ -84,29 +81,16 @@ export default function Create({
           <H5>Authorized Domain Origins</H5>
           <p>Only requests made from these domains can access your API.</p>
           <div style={{ marginBottom: "15px" }}>
-            {authorizedDomains.length > 0 &&
-              authorizedDomains.map((hostname) => (
-                <div>
-                  <Button
-                    icon="remove"
-                    minimal
-                    onClick={removeDomain(hostname)}
-                    intent="danger"
-                    small
-                  />
-                  {hostname}
-                </div>
-              ))}
-          </div>
-          <div style={{ marginBottom: "15px" }}>
-            <FormGroup helperText={whitelist.helperText}>
-              <InputGroup
-                placeholder="realurl.com"
-                onChange={whitelist.onChange}
-                value={whitelist.value}
-              />
-            </FormGroup>
-            <Button onClick={addDomain} rightIcon="add" intent="primary" text="Add Domain" />
+            <TagInput
+              onChange={authorizedDomains.onChange}
+              placeholder="www.website.com"
+              rightElement={
+                authorizedDomains.values.length > 0 && (
+                  <Button icon="cross" minimal={true} onClick={authorizedDomains.clear} />
+                )
+              }
+              values={authorizedDomains.values}
+            />
           </div>
         </div>
       </section>

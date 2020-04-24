@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Create from "./Create";
 import useFormInput from "../../hooks/useFormInput";
+import useTagInput from '../../hooks/useTagInput'
 import { useHistory } from "react-router-dom";
 import { AppToaster } from "../../toaster";
 
@@ -21,8 +22,7 @@ export default function CreateContainer() {
 }
 `);
   const [method, setMethod] = useState("GET");
-  const whitelist = useFormInput("");
-  const [authorizedDomains, setAuthorizedDomains] = useState([]);
+  const authorizedDomains = useTagInput();
 
   const [testResults, setTestResults] = useState([]);
   const [showTestResults, setShowTestResults] = useState(true);
@@ -60,7 +60,7 @@ export default function CreateContainer() {
           // Fill in endpoint data
           const { endpoint } = res.data;
           setMethod(endpoint.method);
-          setAuthorizedDomains(endpoint.whitelist);
+          authorizedDomains.set(endpoint.whitelist)
           setCode(endpoint.displayCode);
           setTags(endpoint.tags);
           let uriSegs = endpoint.uri.split("/").splice(3);
@@ -79,7 +79,7 @@ export default function CreateContainer() {
       uri: uri.value.substring(1),
       method: method,
       content: code,
-      whitelist: authorizedDomains,
+      whitelist: authorizedDomains.values,
       body: {},
       query: {},
     };
@@ -105,7 +105,7 @@ export default function CreateContainer() {
       uri: uri.value.substring(1),
       method: method,
       content: code,
-      whitelist: authorizedDomains,
+      whitelist: authorizedDomains.values,
       body: {},
       query: {},
       tags: tags,
@@ -148,18 +148,6 @@ export default function CreateContainer() {
     }
   }
 
-  function addDomain() {
-    if (authorizedDomains.includes(whitelist.value)) {
-      whitelist.setError("Domain already whitelisted.");
-      return;
-    }
-    setAuthorizedDomains([...authorizedDomains, whitelist.value]);
-    whitelist.clear();
-  }
-
-  const removeDomain = (hostname) => () => {
-    setAuthorizedDomains(authorizedDomains.filter((domain) => domain !== hostname));
-  };
 
   return (
     <Create
@@ -170,10 +158,7 @@ export default function CreateContainer() {
       onCodeChange={onCodeChange}
       testCode={testCode}
       createEndpoint={createEndpoint}
-      whitelist={whitelist}
       authorizedDomains={authorizedDomains}
-      addDomain={addDomain}
-      removeDomain={removeDomain}
       testResults={testResults}
       showTestResults={showTestResults}
       editMode={editMode}
