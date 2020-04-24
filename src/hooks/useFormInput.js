@@ -31,6 +31,7 @@ const useFormInput = (initialValue) => {
     helperText: helperText,
     setError: setError,
     clearError: clearError,
+    setValue: setValue,
   };
 };
 
