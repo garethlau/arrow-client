@@ -7,7 +7,7 @@ import {
   Intent,
 } from "@blueprintjs/core";
 
-export default function Signup({ username, password, submit }) {
+export default function Login({ username, email, password, submit }) {
   const [showPassword, setShowPassword] = useState(false);
   const lockButton = (
     <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`}>
@@ -47,6 +47,19 @@ export default function Signup({ username, password, submit }) {
         </FormGroup>
 
         <FormGroup
+          helperText={username.helperText}
+          label="Email"
+          labelFor="text-input"
+          labelInfo="(required)"
+        >
+          <InputGroup
+            id="email-text-input"
+            value={email.value}
+            onChange={email.onChange}
+          />
+        </FormGroup>
+
+        <FormGroup
           helperText={password.helperText}
           label="Password"
           labelFor="text-input"
@@ -62,17 +75,17 @@ export default function Signup({ username, password, submit }) {
           />
         </FormGroup>
         <div>
-          <Button onClick={submit} text="Log in" intent="primary" />
+          <Button onClick={submit} text="Sign up" intent="primary" />
           <p
             style={{ fontSize: "0.85em", display: "inline", marginLeft: "5px" }}
           >
-            Don't have an account?
+            Already have an account?
           </p>
           <a
             style={{ fontSize: "0.85em", display: "inline", marginLeft: "5px" }}
-            href="/signup"
+            href="/login"
           >
-            Sign up
+            Log in
           </a>
         </div>
       </div>
